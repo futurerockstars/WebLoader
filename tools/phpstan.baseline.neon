@@ -381,36 +381,6 @@ parameters:
 			path: ../src/Filter/Process.php
 
 		-
-			message: "#^Call to method compile\\(\\) on an unknown class scssc\\.$#"
-			count: 1
-			path: ../src/Filter/ScssFilter.php
-
-		-
-			message: "#^Call to method setImportPaths\\(\\) on an unknown class scssc\\.$#"
-			count: 1
-			path: ../src/Filter/ScssFilter.php
-
-		-
-			message: "#^Construct empty\\(\\) is not allowed\\. Use more strict comparison\\.$#"
-			count: 1
-			path: ../src/Filter/ScssFilter.php
-
-		-
-			message: "#^Method WebLoader\\\\Filter\\\\ScssFilter\\:\\:getScssC\\(\\) has invalid return type scssc\\.$#"
-			count: 1
-			path: ../src/Filter/ScssFilter.php
-
-		-
-			message: "#^Property WebLoader\\\\Filter\\\\ScssFilter\\:\\:\\$sc \\(Leafo\\\\ScssPhp\\\\Compiler\\) does not accept Leafo\\\\ScssPhp\\\\Compiler\\|null\\.$#"
-			count: 1
-			path: ../src/Filter/ScssFilter.php
-
-		-
-			message: "#^Property WebLoader\\\\Filter\\\\ScssFilter\\:\\:\\$sc \\(Leafo\\\\ScssPhp\\\\Compiler\\) in empty\\(\\) is not falsy\\.$#"
-			count: 1
-			path: ../src/Filter/ScssFilter.php
-
-		-
 			message: "#^Method WebLoader\\\\Filter\\\\StylusFilter\\:\\:__construct\\(\\) has parameter \\$bin with no type specified\\.$#"
 			count: 1
 			path: ../src/Filter/StylusFilter.php

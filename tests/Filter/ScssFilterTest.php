@@ -23,7 +23,7 @@ class ScssFilterTest extends TestCase
 
 	protected function setUp(): void
 	{
-		$this->filter = new ScssFilter(new \Leafo\ScssPhp\Compiler());
+		$this->filter = new ScssFilter(new \ScssPhp\ScssPhp\Compiler());
 
 		$files = new FileCollection(__DIR__ . '/../fixtures');
 		@mkdir($outputDir = __DIR__ . '/../temp/');

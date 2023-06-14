@@ -29,13 +29,10 @@
 	},
 	"suggest": {
 		"wikimedia/less.php": "LESS compiler written in PHP.",
-		"leafo/scssphp": "SCSS compiler written in PHP.",
+		"scssphp/scssphp": "SCSS compiler written in PHP.",
 		"joseki/webloader-filters": "CSSMin & JSMin filters written in PHP."
 	},
 	"require-dev": {
-		"leafo/scssphp": "~0.1",
-
-		"phpunit/phpunit": "^9.5.0",
 		"brianium/paratest": "^6.10",
 		"mockery/mockery": "^1.6.2",
 		"nette/bootstrap": "^3.1.4",
@@ -47,10 +44,13 @@
 		"phpstan/phpstan-nette": "^1.2",
 		"phpstan/phpstan-phpunit": "^1.3",
 		"phpstan/phpstan-strict-rules": "^1.5",
+		"phpunit/phpunit": "^9.5.0",
+		"scssphp/scssphp": "^1.11.0",
 		"staabm/annotate-pull-request-from-checkstyle": "^1.8",
 		"wikimedia/less.php": "^4.1.0"
 	},
 	"config": {
+		"sort-packages": true,
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true,
 			"phpstan/extension-installer": true

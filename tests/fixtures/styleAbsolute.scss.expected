@@ -1,12 +1,14 @@
 .clearFix {
   display: block;
-  zoom: 1; }
-
+  zoom: 1;
+}
 .navigation ul {
   line-height: 20px;
-  color: blue; }
-  .navigation ul a {
-    color: red; }
-
+  color: blue;
+}
+.navigation ul a {
+  color: red;
+}
 .footer .copyright {
-  color: silver; }
+  color: silver;
+}
