@@ -23,7 +23,6 @@ class Panel implements IBarPanel
 		'js' => 'JavaScript files',
 		'less' => 'Less files',
 		'scss' => 'Sass files',
-		'coffee' => 'CoffeeScript files'
 	);
 
 	/** @var Compiler[] */
