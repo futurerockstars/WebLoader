@@ -556,14 +556,6 @@ parameters:
 			path: ../src/Nette/Extension.php
 
 		-
-			message: """
-				#^Call to deprecated method setClass\\(\\) of class Nette\\\\DI\\\\ServiceDefinition\\:
-				Use setType\\(\\) instead\\.$#
-			"""
-			count: 4
-			path: ../src/Nette/Extension.php
-
-		-
 			message: "#^Method WebLoader\\\\Nette\\\\Extension\\:\\:addWebLoader\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: ../src/Nette/Extension.php

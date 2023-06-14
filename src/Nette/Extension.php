@@ -81,7 +81,7 @@ class Extension extends CompilerExtension
 
 		if ($config['debugger']) {
 			$builder->addDefinition($this->prefix('tracyPanel'))
-				->setClass(Panel::class);
+				->setFactory(Panel::class);
 		}
 
 		$builder->parameters['webloader'] = $config;
@@ -103,7 +103,7 @@ class Extension extends CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('factory'))
-			->setClass(LoaderFactory::class, [$loaderFactoryTempPaths, $this->name]);
+			->setFactory(LoaderFactory::class, [$loaderFactoryTempPaths, $this->name]);
 	}
 
 	private function addWebLoader(ContainerBuilder $builder, $name, $config)
@@ -111,7 +111,7 @@ class Extension extends CompilerExtension
 		$filesServiceName = $this->prefix($name . 'Files');
 
 		$files = $builder->addDefinition($filesServiceName)
-			->setClass(FileCollection::class)
+			->setFactory(FileCollection::class)
 			->setArguments([$config['sourceDir']]);
 
 		foreach ($this->findFiles($config['files'], $config['sourceDir']) as $file) {
@@ -125,7 +125,7 @@ class Extension extends CompilerExtension
 		$files->addSetup('addRemoteFiles', [$config['remoteFiles']]);
 
 		$compiler = $builder->addDefinition($this->prefix($name . 'Compiler'))
-			->setClass(\WebLoader\Compiler::class)
+			->setFactory(\WebLoader\Compiler::class)
 			->setArguments([
 				'@' . $filesServiceName,
 				$config['namingConvention'],
