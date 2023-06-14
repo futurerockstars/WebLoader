@@ -80,8 +80,7 @@ class Extension extends CompilerExtension
 
 		if ($config['debugger']) {
 			$builder->addDefinition($this->prefix('tracyPanel'))
-				->setClass('WebLoader\Nette\Diagnostics\Panel')
-				->setArguments([$builder->expand('%appDir%')]);
+				->setClass('WebLoader\Nette\Diagnostics\Panel');
 		}
 
 		$builder->parameters['webloader'] = $config;

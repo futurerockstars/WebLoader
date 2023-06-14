@@ -7,13 +7,12 @@ use Latte\Runtime\Filters;
 use Tracy\Debugger;
 use Tracy\IBarPanel;
 use WebLoader\Compiler;
-use function dirname;
+use function basename;
 use function filesize;
 use function lcfirst;
 use function pathinfo;
 use function realpath;
 use function str_replace;
-use function strlen;
 use function strtolower;
 use function substr;
 use const DIRECTORY_SEPARATOR;
@@ -45,12 +44,8 @@ class Panel implements IBarPanel
 	/** @var array */
 	private $sizes;
 
-	/** @var string */
-	private $root;
-
-	public function __construct($appDir = null)
+	public function __construct()
 	{
-		$this->root = $appDir ? str_replace('\\', DIRECTORY_SEPARATOR, realpath(dirname($appDir))) : '';
 		Debugger::getBar()->addPanel($this);
 	}
 
@@ -114,7 +109,7 @@ class Panel implements IBarPanel
 					}
 
 					$this->files[$group][$extension][] = [
-						'name' => substr($file, strlen($this->root) + 1),
+						'name' => basename($file),
 						'full' => $file,
 						'size' => $fileSize = filesize($file),
 					];

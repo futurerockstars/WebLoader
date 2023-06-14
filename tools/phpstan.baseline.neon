@@ -496,11 +496,6 @@ parameters:
 			path: ../src/IOutputNamingConvention.php
 
 		-
-			message: "#^Method WebLoader\\\\Nette\\\\Diagnostics\\\\Panel\\:\\:__construct\\(\\) has parameter \\$appDir with no type specified\\.$#"
-			count: 1
-			path: ../src/Nette/Diagnostics/Panel.php
-
-		-
 			message: "#^Method WebLoader\\\\Nette\\\\Diagnostics\\\\Panel\\:\\:compute\\(\\) return type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../src/Nette/Diagnostics/Panel.php
@@ -532,7 +527,7 @@ parameters:
 
 		-
 			message: "#^Parameter \\#3 \\$subject of function str_replace expects array\\|string, string\\|false given\\.$#"
-			count: 2
+			count: 1
 			path: ../src/Nette/Diagnostics/Panel.php
 
 		-
@@ -557,11 +552,6 @@ parameters:
 
 		-
 			message: "#^Anonymous function uses \\$this assigned to variable \\$self\\. Use \\$this directly in the function body\\.$#"
-			count: 1
-			path: ../src/Nette/Extension.php
-
-		-
-			message: "#^Call to deprecated method expand\\(\\) of class Nette\\\\DI\\\\ContainerBuilder\\.$#"
 			count: 1
 			path: ../src/Nette/Extension.php
 
