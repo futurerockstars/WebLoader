@@ -2,7 +2,6 @@
 
 namespace WebLoader\Nette;
 
-use Nette;
 use Nette\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
@@ -10,8 +9,10 @@ use Nette\DI\Config\Helpers;
 use Nette\DI\ContainerBuilder;
 use Nette\Utils\Finder;
 use SplFileInfo;
+use WebLoader\DefaultOutputNamingConvention;
+use WebLoader\FileCollection;
 use WebLoader\FileNotFoundException;
-use function array_key_exists;
+use WebLoader\Nette\Diagnostics\Panel;
 use function file_exists;
 use function is_array;
 use function is_dir;
@@ -73,14 +74,14 @@ class Extension extends CompilerExtension
 		$config = $this->getConfig($this->getDefaultConfig());
 
 		$builder->addDefinition($this->prefix('cssNamingConvention'))
-			->setFactory('WebLoader\DefaultOutputNamingConvention::createCssConvention');
+			->setFactory([DefaultOutputNamingConvention::class, 'createCssConvention']);
 
 		$builder->addDefinition($this->prefix('jsNamingConvention'))
-			->setFactory('WebLoader\DefaultOutputNamingConvention::createJsConvention');
+			->setFactory([DefaultOutputNamingConvention::class, 'createJsConvention']);
 
 		if ($config['debugger']) {
 			$builder->addDefinition($this->prefix('tracyPanel'))
-				->setClass('WebLoader\Nette\Diagnostics\Panel');
+				->setClass(Panel::class);
 		}
 
 		$builder->parameters['webloader'] = $config;
@@ -102,7 +103,7 @@ class Extension extends CompilerExtension
 		}
 
 		$builder->addDefinition($this->prefix('factory'))
-			->setClass('WebLoader\Nette\LoaderFactory', [$loaderFactoryTempPaths, $this->name]);
+			->setClass(LoaderFactory::class, [$loaderFactoryTempPaths, $this->name]);
 	}
 
 	private function addWebLoader(ContainerBuilder $builder, $name, $config)
@@ -110,7 +111,7 @@ class Extension extends CompilerExtension
 		$filesServiceName = $this->prefix($name . 'Files');
 
 		$files = $builder->addDefinition($filesServiceName)
-			->setClass('WebLoader\FileCollection')
+			->setClass(FileCollection::class)
 			->setArguments([$config['sourceDir']]);
 
 		foreach ($this->findFiles($config['files'], $config['sourceDir']) as $file) {
@@ -124,7 +125,7 @@ class Extension extends CompilerExtension
 		$files->addSetup('addRemoteFiles', [$config['remoteFiles']]);
 
 		$compiler = $builder->addDefinition($this->prefix($name . 'Compiler'))
-			->setClass('WebLoader\Compiler')
+			->setClass(\WebLoader\Compiler::class)
 			->setArguments([
 				'@' . $filesServiceName,
 				$config['namingConvention'],
@@ -155,24 +156,6 @@ class Extension extends CompilerExtension
 		$compiler->addSetup('setCheckLastModified', [$config['checkLastModified']]);
 
 		// todo css media
-	}
-
-	public function afterCompile(Nette\PhpGenerator\ClassType $class)
-	{
-		$meta = $class->properties['meta'];
-		if (array_key_exists('webloader\\nette\\loaderfactory', $meta->value['types'])) {
-			$meta->value['types']['webloader\\loaderfactory'] = $meta->value['types']['webloader\\nette\\loaderfactory'];
-		}
-
-		if (array_key_exists('WebLoader\\Nette\\LoaderFactory', $meta->value['types'])) {
-			$meta->value['types']['WebLoader\\LoaderFactory'] = $meta->value['types']['WebLoader\\Nette\\LoaderFactory'];
-		}
-
-		$init = $class->methods['initialize'];
-		$init->addBody(
-			'if (!class_exists(?, ?)) class_alias(?, ?);',
-			['WebLoader\\LoaderFactory', false, 'WebLoader\\Nette\\LoaderFactory', 'WebLoader\\LoaderFactory'],
-		);
 	}
 
 	public function install(Configurator $configurator)
