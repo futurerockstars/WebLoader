@@ -586,11 +586,6 @@ parameters:
 			path: ../src/Nette/Extension.php
 
 		-
-			message: "#^Method WebLoader\\\\Nette\\\\Extension\\:\\:getDefaultConfig\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../src/Nette/Extension.php
-
-		-
 			message: "#^Method WebLoader\\\\Nette\\\\Extension\\:\\:install\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: ../src/Nette/Extension.php
@@ -602,6 +597,11 @@ parameters:
 
 		-
 			message: "#^Offset 'tempPath' might not exist on array\\|string\\.$#"
+			count: 1
+			path: ../src/Nette/Extension.php
+
+		-
+			message: "#^Only booleans are allowed in an if condition, mixed given\\.$#"
 			count: 1
 			path: ../src/Nette/Extension.php
 
@@ -647,11 +647,6 @@ parameters:
 
 		-
 			message: "#^Method WebLoader\\\\Nette\\\\WebLoader\\:\\:setTempPath\\(\\) has parameter \\$tempPath with no type specified\\.$#"
-			count: 1
-			path: ../src/Nette/WebLoader.php
-
-		-
-			message: "#^WebLoader\\\\Nette\\\\WebLoader\\:\\:__construct\\(\\) does not call parent constructor from Nette\\\\ComponentModel\\\\Component\\.$#"
 			count: 1
 			path: ../src/Nette/WebLoader.php
 

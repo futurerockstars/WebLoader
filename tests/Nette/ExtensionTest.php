@@ -29,7 +29,7 @@ class ExtensionTest extends TestCase
 		$configurator->setTempDirectory($tempDir);
 
 		foreach ($configFiles as $file) {
-			$configurator->addConfig($file, false);
+			$configurator->addConfig($file);
 		}
 
 		$configurator->addParameters([
@@ -38,7 +38,7 @@ class ExtensionTest extends TestCase
 			'tempDir' => $tempDir,
 		]);
 
-		$extension = new Extension();
+		$extension = new Extension(__DIR__ . '/..', false);
 		$extension->install($configurator);
 
 		$this->container = @$configurator->createContainer(); // sends header X-Powered-By, ...
@@ -92,9 +92,9 @@ class ExtensionTest extends TestCase
 		$configurator->setTempDirectory($tempDir);
 		$configurator->addParameters(['container' => ['class' => $class]]);
 		$configurator->onCompile[] = function ($configurator, Compiler $compiler) {
-			$compiler->addExtension('Foo', new Extension());
+			$compiler->addExtension('Foo', new Extension(__DIR__ . '/..', false));
 		};
-		$configurator->addConfig(__DIR__ . '/../fixtures/extensionName.neon', false);
+		$configurator->addConfig(__DIR__ . '/../fixtures/extensionName.neon');
 		$container = $configurator->createContainer();
 
 		self::assertInstanceOf('WebLoader\Compiler', $container->getService('Foo.cssDefaultCompiler'));

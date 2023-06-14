@@ -2,11 +2,13 @@
 
 namespace WebLoader\Nette;
 
+use Nette;
 use Nette\Configurator;
 use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
-use Nette\DI\Config\Helpers;
 use Nette\DI\ContainerBuilder;
+use Nette\Schema\Expect;
+use Nette\Schema\Helpers;
 use Nette\Utils\Finder;
 use SplFileInfo;
 use WebLoader\DefaultOutputNamingConvention;
@@ -24,6 +26,9 @@ use function strtolower;
 use function ucfirst;
 use const DIRECTORY_SEPARATOR;
 
+/**
+ * @property-read array<mixed> $config
+ */
 class Extension extends CompilerExtension
 {
 
@@ -31,47 +36,57 @@ class Extension extends CompilerExtension
 
 	public const EXTENSION_NAME = 'webloader';
 
-	public function getDefaultConfig()
+	private string $wwwDir;
+
+	private bool $debugMode;
+
+	public function __construct(string $wwwDir, bool $debugMode)
 	{
-		return [
-			'jsDefaults' => [
-				'checkLastModified' => true,
-				'debug' => false,
-				'sourceDir' => '%wwwDir%/js',
-				'tempDir' => '%wwwDir%/' . self::DEFAULT_TEMP_PATH,
-				'tempPath' => self::DEFAULT_TEMP_PATH,
-				'files' => [],
-				'watchFiles' => [],
-				'remoteFiles' => [],
-				'filters' => [],
-				'fileFilters' => [],
-				'joinFiles' => true,
-				'namingConvention' => '@' . $this->prefix('jsNamingConvention'),
-			],
-			'cssDefaults' => [
-				'checkLastModified' => true,
-				'debug' => false,
-				'sourceDir' => '%wwwDir%/css',
-				'tempDir' => '%wwwDir%/' . self::DEFAULT_TEMP_PATH,
-				'tempPath' => self::DEFAULT_TEMP_PATH,
-				'files' => [],
-				'watchFiles' => [],
-				'remoteFiles' => [],
-				'filters' => [],
-				'fileFilters' => [],
-				'joinFiles' => true,
-				'namingConvention' => '@' . $this->prefix('cssNamingConvention'),
-			],
-			'js' => [],
-			'css' => [],
-			'debugger' => '%debugMode%',
-		];
+		$this->wwwDir = $wwwDir;
+		$this->debugMode = $debugMode;
+	}
+
+	public function getConfigSchema(): Nette\Schema\Schema
+	{
+		return Expect::structure([
+			'jsDefaults' => Expect::structure([
+				'checkLastModified' => Expect::bool(true),
+				'debug' => Expect::bool(false),
+				'sourceDir' => Expect::string($this->wwwDir . '/js'),
+				'tempDir' => Expect::string($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH),
+				'tempPath' => Expect::string(self::DEFAULT_TEMP_PATH),
+				'files' => Expect::array(),
+				'watchFiles' => Expect::array(),
+				'remoteFiles' => Expect::array(),
+				'filters' => Expect::array(),
+				'fileFilters' => Expect::array(),
+				'joinFiles' => Expect::bool(true),
+				'namingConvention' => Expect::string('@' . $this->prefix('jsNamingConvention')),
+			])->castTo('array'),
+			'cssDefaults' => Expect::structure([
+				'checkLastModified' => Expect::bool(true),
+				'debug' => Expect::bool(false),
+				'sourceDir' => Expect::string($this->wwwDir . '/css')->dynamic(),
+				'tempDir' => Expect::string($this->wwwDir . '/' . self::DEFAULT_TEMP_PATH),
+				'tempPath' => Expect::string(self::DEFAULT_TEMP_PATH),
+				'files' => Expect::array(),
+				'watchFiles' => Expect::array(),
+				'remoteFiles' => Expect::array(),
+				'filters' => Expect::array(),
+				'fileFilters' => Expect::array(),
+				'joinFiles' => Expect::bool(true),
+				'namingConvention' => Expect::string('@' . $this->prefix('cssNamingConvention')),
+			])->castTo('array'),
+			'js' => Expect::array(),
+			'css' => Expect::array(),
+			'debugger' => Expect::bool($this->debugMode),
+		])->castTo('array');
 	}
 
 	public function loadConfiguration()
 	{
 		$builder = $this->getContainerBuilder();
-		$config = $this->getConfig($this->getDefaultConfig());
+		$config = $this->config;
 
 		$builder->addDefinition($this->prefix('cssNamingConvention'))
 			->setFactory([DefaultOutputNamingConvention::class, 'createCssConvention']);
