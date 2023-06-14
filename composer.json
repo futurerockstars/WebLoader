@@ -50,11 +50,6 @@
 		"phpstan/phpstan-strict-rules": "^1.5",
 		"staabm/annotate-pull-request-from-checkstyle": "^1.8"
 	},
-	"extra": {
-		"branch-alias": {
-			"dev-master": "2.4-dev"
-		}
-	},
 	"config": {
 		"allow-plugins": {
 			"dealerdirect/phpcodesniffer-composer-installer": true,
