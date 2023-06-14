@@ -51,36 +51,36 @@ class CompilerTest extends \PHPUnit\Framework\TestCase
 		return glob(__DIR__ . '/temp/webloader-*');
 	}
 
-	public function testJoinFiles()
+	public function testJoinFiles(): void
 	{
-		$this->assertTrue($this->object->getJoinFiles());
+		self::assertTrue($this->object->getJoinFiles());
 
 		$ret = $this->object->generate();
-		$this->assertEquals(1, count($ret), 'Multiple files are generated instead of join.');
-		$this->assertEquals(1, count($this->getTempFiles()), 'Multiple files are generated instead of join.');
+		self::assertEquals(1, count($ret), 'Multiple files are generated instead of join.');
+		self::assertEquals(1, count($this->getTempFiles()), 'Multiple files are generated instead of join.');
 	}
 
-	public function testEmptyFiles()
+	public function testEmptyFiles(): void
 	{
-		$this->assertTrue($this->object->getJoinFiles());
+		self::assertTrue($this->object->getJoinFiles());
 		$this->object->setFileCollection(new \WebLoader\FileCollection());
 
 		$ret = $this->object->generate();
-		$this->assertEquals(0, count($ret));
-		$this->assertEquals(0, count($this->getTempFiles()));
+		self::assertEquals(0, count($ret));
+		self::assertEquals(0, count($this->getTempFiles()));
 	}
 
-	public function testNotJoinFiles()
+	public function testNotJoinFiles(): void
 	{
 		$this->object->setJoinFiles(FALSE);
-		$this->assertFalse($this->object->getJoinFiles());
+		self::assertFalse($this->object->getJoinFiles());
 
 		$ret = $this->object->generate();
-		$this->assertEquals(3, count($ret), 'Wrong file count generated.');
-		$this->assertEquals(3, count($this->getTempFiles()), 'Wrong file count generated.');
+		self::assertEquals(3, count($ret), 'Wrong file count generated.');
+		self::assertEquals(3, count($this->getTempFiles()), 'Wrong file count generated.');
 	}
 
-	public function testGeneratingAndFilters()
+	public function testGeneratingAndFilters(): void
 	{
 		$this->object->addFileFilter(function ($code) {
 			return strrev($code);
@@ -100,49 +100,49 @@ class CompilerTest extends \PHPUnit\Framework\TestCase
 
 		$files = $this->object->generate();
 
-		$this->assertTrue(is_numeric($files[0]->lastModified), 'Generate does not provide last modified timestamp correctly.');
+		self::assertTrue(is_numeric($files[0]->lastModified), 'Generate does not provide last modified timestamp correctly.');
 
 		$content = file_get_contents($this->object->getOutputDir() . '/' . $files[0]->file);
 
-		$this->assertEquals($expectedContent, $content);
+		self::assertEquals($expectedContent, $content);
 	}
 
-	public function testGenerateReturnsSourceFilePaths()
+	public function testGenerateReturnsSourceFilePaths(): void
 	{
 		$res = $this->object->generate();
-		$this->assertIsArray($res[0]->sourceFiles);
-		$this->assertCount(3, $res[0]->sourceFiles);
-		$this->assertFileExists($res[0]->sourceFiles[0]);
+		self::assertIsArray($res[0]->sourceFiles);
+		self::assertCount(3, $res[0]->sourceFiles);
+		self::assertFileExists($res[0]->sourceFiles[0]);
 	}
 
-	public function testFilters()
+	public function testFilters(): void
 	{
 		$filter = function ($code, \WebLoader\Compiler $loader) {
 			return $code . $code;
 		};
 		$this->object->addFilter($filter);
 		$this->object->addFilter($filter);
-		$this->assertEquals(array($filter, $filter), $this->object->getFilters());
+		self::assertEquals(array($filter, $filter), $this->object->getFilters());
 	}
 
-	public function testFileFilters()
+	public function testFileFilters(): void
 	{
 		$filter = function ($code, \WebLoader\Compiler $loader, $file = null) {
 			return $code . $code;
 		};
 		$this->object->addFileFilter($filter);
 		$this->object->addFileFilter($filter);
-		$this->assertEquals(array($filter, $filter), $this->object->getFileFilters());
+		self::assertEquals(array($filter, $filter), $this->object->getFileFilters());
 	}
 
-	public function testNonCallableFilter()
+	public function testNonCallableFilter(): void
 	{
 		$this->expectException(InvalidArgumentException::class);
 
 		$this->object->addFilter(4);
 	}
 
-	public function testNonCallableFileFilter()
+	public function testNonCallableFileFilter(): void
 	{
 		$this->expectException(InvalidArgumentException::class);
 

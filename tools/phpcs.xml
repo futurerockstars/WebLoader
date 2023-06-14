@@ -11,6 +11,8 @@
 	<!-- Import coding-standard -->
 	<rule ref="./../vendor/orisai/coding-standard/src/ruleset-7.4.xml"/>
 
+	<exclude-pattern>tests/temp</exclude-pattern>
+
 	<!-- Configure PSR-4 rule -->
 	<!--
 	<rule ref="SlevomatCodingStandard.Files.TypeNameMatchesFileName">

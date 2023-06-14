@@ -25,14 +25,14 @@ class ScssFilterTest extends \PHPUnit\Framework\TestCase
 		$this->compiler = new Compiler($files, new DefaultOutputNamingConvention(), $outputDir);
 	}
 
-	public function testReplace()
+	public function testReplace(): void
 	{
 		$file = __DIR__ . '/../fixtures/style.scss';
 		$less = $this->filter->__invoke(file_get_contents($file), $this->compiler, $file);
-		$this->assertSame(file_get_contents(__DIR__ . '/../fixtures/style.scss.expected'), $less);
+		self::assertSame(file_get_contents(__DIR__ . '/../fixtures/style.scss.expected'), $less);
 	}
 
-	public function testImportAbsolutePath()
+	public function testImportAbsolutePath(): void
 	{
 		$file = __DIR__ . '/../fixtures/styleAbsolute.scss';
 		$filter = new VariablesFilter(array(
@@ -41,7 +41,7 @@ class ScssFilterTest extends \PHPUnit\Framework\TestCase
 		$code = file_get_contents($file);
 		$filtered = $filter($code);
 		$less = $this->filter->__invoke($filtered, $this->compiler, $file);
-		$this->assertSame(file_get_contents(__DIR__ . '/../fixtures/styleAbsolute.scss.expected'), $less);
+		self::assertSame(file_get_contents(__DIR__ . '/../fixtures/styleAbsolute.scss.expected'), $less);
 	}
 
 }

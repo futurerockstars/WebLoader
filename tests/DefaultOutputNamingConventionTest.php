@@ -23,7 +23,7 @@ class DefaultOutputNamingConventionTest extends \PHPUnit\Framework\TestCase
 		$this->compiler = \Mockery::mock('Webloader\Compiler');
 	}
 
-	public function testMultipleFiles()
+	public function testMultipleFiles(): void
 	{
 		$files = array(
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'a.txt',
@@ -31,42 +31,42 @@ class DefaultOutputNamingConventionTest extends \PHPUnit\Framework\TestCase
 		);
 
 		$name = $this->object->getFilename($files, $this->compiler);
-		$this->assertMatchesRegularExpression('/^webloader-[0-9a-f]{12}$/', $name);
+		self::assertMatchesRegularExpression('/^webloader-[0-9a-f]{12}$/', $name);
 
 		// another hash
 		$files[] = __DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'c.txt';
 		$name2 = $this->object->getFilename($files, $this->compiler);
-		$this->assertNotEquals($name, $name2, 'Different file lists results to same filename.');
+		self::assertNotEquals($name, $name2, 'Different file lists results to same filename.');
 	}
 
-	public function testOneFile()
+	public function testOneFile(): void
 	{
 		$files = array(
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'a.txt',
 		);
 
 		$name = $this->object->getFilename($files, $this->compiler);
-		$this->assertMatchesRegularExpression('/^webloader-[0-9a-f]{12}-a$/', $name);
+		self::assertMatchesRegularExpression('/^webloader-[0-9a-f]{12}-a$/', $name);
 	}
 
-	public function testCssConvention()
+	public function testCssConvention(): void
 	{
 		$files = array(
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'a.txt',
 		);
 
 		$name = DefaultOutputNamingConvention::createCssConvention()->getFilename($files, $this->compiler);
-		$this->assertMatchesRegularExpression('/^cssloader-[0-9a-f]{12}-a.css$/', $name);
+		self::assertMatchesRegularExpression('/^cssloader-[0-9a-f]{12}-a.css$/', $name);
 	}
 
-	public function testJsConvention()
+	public function testJsConvention(): void
 	{
 		$files = array(
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'a.txt',
 		);
 
 		$name = DefaultOutputNamingConvention::createJsConvention()->getFilename($files, $this->compiler);
-		$this->assertMatchesRegularExpression('/^jsloader-[0-9a-f]{12}-a.js$/', $name);
+		self::assertMatchesRegularExpression('/^jsloader-[0-9a-f]{12}-a.js$/', $name);
 	}
 
 }

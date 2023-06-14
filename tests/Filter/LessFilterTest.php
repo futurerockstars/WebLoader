@@ -24,11 +24,11 @@ class LessFilterTest extends \PHPUnit\Framework\TestCase
 		$this->compiler = new Compiler($files, new DefaultOutputNamingConvention(), $outputDir);
 	}
 
-	public function testReplace()
+	public function testReplace(): void
 	{
 		$file = __DIR__ . '/../fixtures/style.less';
 		$less = $this->filter->__invoke(file_get_contents($file), $this->compiler, $file);
-		$this->assertSame(file_get_contents(__DIR__ . '/../fixtures/style.less.expected'), $less);
+		self::assertSame(file_get_contents(__DIR__ . '/../fixtures/style.less.expected'), $less);
 	}
 
 }

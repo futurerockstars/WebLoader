@@ -17,7 +17,7 @@ class VariablesFilterTest extends \PHPUnit\Framework\TestCase
 		));
 	}
 
-	public function testReplace()
+	public function testReplace(): void
 	{
 		$this->object->bar = 'baz';
 
@@ -27,13 +27,13 @@ class VariablesFilterTest extends \PHPUnit\Framework\TestCase
 
 		$filtered = $filter($code);
 
-		$this->assertEquals('a tak sel bar za bazem a potkali druheho bar', $filtered);
+		self::assertEquals('a tak sel bar za bazem a potkali druheho bar', $filtered);
 	}
 
-	public function testDelimiters()
+	public function testDelimiters(): void
 	{
 		$this->object->setDelimiter('[', ']');
-		$this->assertEquals('bar', call_user_func($this->object, '[foo]'));
+		self::assertEquals('bar', call_user_func($this->object, '[foo]'));
 	}
 
 }
