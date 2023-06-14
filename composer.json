@@ -16,9 +16,16 @@
 		}
 	},
 	"require": {
-		"nette/application": "~2.3@dev",
-		"nette/di": "~2.3@dev",
-		"nette/utils": "~2.3@dev"
+		"nette/application": "^2.4.17",
+		"nette/bootstrap": "^2.4.6",
+		"nette/caching": "^2.5.9",
+		"nette/di": "^2.4.17",
+		"nette/finder": "^2.6.0",
+		"nette/http": "^2.4.12",
+		"nette/safe-stream": "^2.5.1",
+		"nette/utils": "^2.5.7",
+		"latte/latte": "^2.7.4",
+		"tracy/tracy": "^2.6.0"
 	},
 	"suggest": {
 		"oyejorge/less.php": "LESS compiler written in PHP.",
@@ -27,35 +34,14 @@
 		"coffeescript/coffeescript": "CoffeeScript compiler written in PHP."
 	},
 	"require-dev": {
-		"nette/application": "~2.3@dev",
-		"nette/bootstrap": "~2.3@dev",
-		"nette/caching": "~2.3@dev",
-		"nette/component-model": "~2.2@dev",
-		"nette/database": "~2.3@dev",
-		"nette/deprecated": "~2.2@dev",
-		"nette/di": "~2.3@dev",
-		"nette/finder": "~2.3@dev",
-		"nette/forms": "~2.3@dev",
-		"nette/http": "~2.3@dev",
-		"nette/mail": "~2.3@dev",
-		"nette/neon": "~2.3@dev",
-		"nette/php-generator": "~2.3@dev",
-		"nette/reflection": "~2.3@dev",
-		"nette/robot-loader": "~2.3@dev",
-		"nette/safe-stream": "~2.3@dev",
-		"nette/security": "~2.3@dev",
-		"nette/tokenizer": "~2.2@dev",
-		"nette/utils": "~2.3@dev",
-		"latte/latte": "~2.3@dev",
-		"tracy/tracy": "~2.3@dev",
-
 		"oyejorge/less.php": "~1.5",
 		"leafo/scssphp": "~0.1",
 		"coffeescript/coffeescript": "1.3.*",
 
-		"mockery/mockery": "^1.6.2",
 		"phpunit/phpunit": "^9.5.0",
 		"brianium/paratest": "^6.10",
+		"mockery/mockery": "^1.6.2",
+		"nette/robot-loader": "^3.1.0",
 		"orisai/coding-standard": "^3.7",
 		"phpstan/extension-installer": "^1.3",
 		"phpstan/phpstan": "^1.10",

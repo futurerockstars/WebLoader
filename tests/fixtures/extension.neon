@@ -1,9 +1,8 @@
 parameters:
   cssJoinFiles: false
 
-nette:
-  security:
-    frames: yes
+http:
+  frames: true
 
 services:
   variablesFilter: WebLoader\Filter\VariablesFilter({foo: bar})
