@@ -2,6 +2,8 @@
 
 namespace WebLoader;
 
+use Nette\Utils\FileSystem;
+
 /**
  * Compiler
  *
@@ -86,15 +88,7 @@ class Compiler
 	 */
 	public function setOutputDir($tempPath)
 	{
-		$tempPath = Path::normalize($tempPath);
-
-		if (!is_dir($tempPath)) {
-			throw new FileNotFoundException("Temp path '$tempPath' does not exist.");
-		}
-
-		if (!is_writable($tempPath)) {
-			throw new InvalidArgumentException("Directory '$tempPath' is not writeable.");
-		}
+		FileSystem::createDir($tempPath);
 
 		$this->outputDir = $tempPath;
 	}

@@ -4,19 +4,20 @@ namespace WebLoader\Test;
 
 use Mockery;
 use WebLoader\Compiler;
+use WebLoader\InvalidArgumentException;
 
 /**
  * CompilerTest
  *
  * @author Jan Marek
  */
-class CompilerTest extends \PHPUnit_Framework_TestCase
+class CompilerTest extends \PHPUnit\Framework\TestCase
 {
 
 	/** @var \WebLoader\Compiler */
 	private $object;
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$fileCollection = Mockery::mock('WebLoader\IFileCollection');
 		$fileCollection->shouldReceive('getFiles')->andReturn(array(
@@ -79,14 +80,6 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(3, count($this->getTempFiles()), 'Wrong file count generated.');
 	}
 
-	/**
-	 * @expectedException \WebLoader\FileNotFoundException
-	 */
-	public function testSetOutDir()
-	{
-		$this->object->setOutputDir('blablabla');
-	}
-
 	public function testGeneratingAndFilters()
 	{
 		$this->object->addFileFilter(function ($code) {
@@ -117,7 +110,7 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 	public function testGenerateReturnsSourceFilePaths()
 	{
 		$res = $this->object->generate();
-		$this->assertInternalType('array', $res[0]->sourceFiles);
+		$this->assertIsArray($res[0]->sourceFiles);
 		$this->assertCount(3, $res[0]->sourceFiles);
 		$this->assertFileExists($res[0]->sourceFiles[0]);
 	}
@@ -142,19 +135,17 @@ class CompilerTest extends \PHPUnit_Framework_TestCase
 		$this->assertEquals(array($filter, $filter), $this->object->getFileFilters());
 	}
 
-	/**
-	 * @expectedException \WebLoader\InvalidArgumentException
-	 */
 	public function testNonCallableFilter()
 	{
+		$this->expectException(InvalidArgumentException::class);
+
 		$this->object->addFilter(4);
 	}
 
-	/**
-	 * @expectedException \WebLoader\InvalidArgumentException
-	 */
 	public function testNonCallableFileFilter()
 	{
+		$this->expectException(InvalidArgumentException::class);
+
 		$this->object->addFileFilter(4);
 	}
 

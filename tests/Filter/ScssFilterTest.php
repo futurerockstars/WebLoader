@@ -8,7 +8,7 @@ use WebLoader\FileCollection;
 use WebLoader\Filter\ScssFilter;
 use WebLoader\Filter\VariablesFilter;
 
-class ScssFilterTest extends \PHPUnit_Framework_TestCase
+class ScssFilterTest extends \PHPUnit\Framework\TestCase
 {
 	/** @var ScssFilter */
 	private $filter;
@@ -16,7 +16,7 @@ class ScssFilterTest extends \PHPUnit_Framework_TestCase
 	/** @var Compiler */
 	private $compiler;
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->filter = new ScssFilter(new \Leafo\ScssPhp\Compiler());
 

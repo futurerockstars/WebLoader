@@ -9,13 +9,13 @@ use WebLoader\Filter\PHPCoffeeScriptFilter;
  *
  * @author Jan Svantner
  */
-class PHPCoffeeScriptFilterTest extends \PHPUnit_Framework_TestCase
+class PHPCoffeeScriptFilterTest extends \PHPUnit\Framework\TestCase
 {
 
 	/** @var PHPCoffeeScriptFilter */
 	private $object;
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->object = new PHPCoffeeScriptFilter();
 	}

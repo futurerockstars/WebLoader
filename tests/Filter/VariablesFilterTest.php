@@ -4,13 +4,13 @@ namespace WebLoader\Test\Filter;
 
 use WebLoader\Filter\VariablesFilter;
 
-class VariablesFilterTest extends \PHPUnit_Framework_TestCase
+class VariablesFilterTest extends \PHPUnit\Framework\TestCase
 {
 
 	/** @var VariablesFilter */
 	private $object;
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->object = new VariablesFilter(array(
 			'foo' => 'bar',

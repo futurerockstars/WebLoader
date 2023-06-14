@@ -7,7 +7,7 @@ use WebLoader\DefaultOutputNamingConvention;
 use WebLoader\FileCollection;
 use WebLoader\Filter\LessFilter;
 
-class LessFilterTest extends \PHPUnit_Framework_TestCase
+class LessFilterTest extends \PHPUnit\Framework\TestCase
 {
 	/** @var LessFilter */
 	private $filter;
@@ -15,7 +15,7 @@ class LessFilterTest extends \PHPUnit_Framework_TestCase
 	/** @var Compiler */
 	private $compiler;
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->filter = new LessFilter(new \lessc());
 

@@ -4,13 +4,13 @@ namespace WebLoader\Test\Filter;
 
 use WebLoader\Filter\CssUrlsFilter;
 
-class CssUrlsFilterTest extends \PHPUnit_Framework_TestCase
+class CssUrlsFilterTest extends \PHPUnit\Framework\TestCase
 {
 
 	/** @var CssUrlsFilter */
 	private $object;
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->object = new CssUrlsFilter(__DIR__ . '/..', '/');
 	}

@@ -4,7 +4,7 @@ namespace WebLoader\Test\Path;
 
 use WebLoader\Path;
 
-class PathTest extends \PHPUnit_Framework_TestCase
+class PathTest extends \PHPUnit\Framework\TestCase
 {
 
 	public function testNormalize()

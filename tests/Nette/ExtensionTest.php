@@ -4,7 +4,7 @@ namespace WebLoader\Test\Nette;
 
 use Nette\Utils\Finder;
 
-class ExtensionTest extends \PHPUnit_Framework_TestCase
+class ExtensionTest extends \PHPUnit\Framework\TestCase
 {
 
 	/** @var \Nette\DI\Container */

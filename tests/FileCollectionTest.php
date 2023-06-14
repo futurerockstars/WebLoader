@@ -3,19 +3,20 @@
 namespace WebLoader\Test;
 
 use WebLoader\FileCollection;
+use WebLoader\FileNotFoundException;
 
 /**
  * FileCollection test
  *
  * @author Jan Marek
  */
-class FileCollectionTest extends \PHPUnit_Framework_TestCase
+class FileCollectionTest extends \PHPUnit\Framework\TestCase
 {
 
 	/** @var FileCollection */
 	private $object;
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->object = new FileCollection(__DIR__ . '/fixtures');
 	}
@@ -34,11 +35,10 @@ class FileCollectionTest extends \PHPUnit_Framework_TestCase
 		$this->assertEqualPaths($expected, $this->object->getFiles());
 	}
 
-	/**
-	 * @expectedException \Webloader\FileNotFoundException
-	 */
 	public function testAddNonExistingFile()
 	{
+		$this->expectException(FileNotFoundException::class);
+
 		$this->object->addFile('sdfsdg.txt');
 	}
 

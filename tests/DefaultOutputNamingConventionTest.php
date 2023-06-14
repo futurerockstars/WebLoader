@@ -9,7 +9,7 @@ use WebLoader\DefaultOutputNamingConvention;
  *
  * @author Jan Marek
  */
-class DefaultOutputNamingConventionTest extends \PHPUnit_Framework_TestCase
+class DefaultOutputNamingConventionTest extends \PHPUnit\Framework\TestCase
 {
 
 	/** @var DefaultOutputNamingConvention */
@@ -17,7 +17,7 @@ class DefaultOutputNamingConventionTest extends \PHPUnit_Framework_TestCase
 
 	private $compiler;
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		$this->object = new DefaultOutputNamingConvention();
 		$this->compiler = \Mockery::mock('Webloader\Compiler');
@@ -31,7 +31,7 @@ class DefaultOutputNamingConventionTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$name = $this->object->getFilename($files, $this->compiler);
-		$this->assertRegExp('/^webloader-[0-9a-f]{12}$/', $name);
+		$this->assertMatchesRegularExpression('/^webloader-[0-9a-f]{12}$/', $name);
 
 		// another hash
 		$files[] = __DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'c.txt';
@@ -46,7 +46,7 @@ class DefaultOutputNamingConventionTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$name = $this->object->getFilename($files, $this->compiler);
-		$this->assertRegExp('/^webloader-[0-9a-f]{12}-a$/', $name);
+		$this->assertMatchesRegularExpression('/^webloader-[0-9a-f]{12}-a$/', $name);
 	}
 
 	public function testCssConvention()
@@ -56,7 +56,7 @@ class DefaultOutputNamingConventionTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$name = DefaultOutputNamingConvention::createCssConvention()->getFilename($files, $this->compiler);
-		$this->assertRegExp('/^cssloader-[0-9a-f]{12}-a.css$/', $name);
+		$this->assertMatchesRegularExpression('/^cssloader-[0-9a-f]{12}-a.css$/', $name);
 	}
 
 	public function testJsConvention()
@@ -66,7 +66,7 @@ class DefaultOutputNamingConventionTest extends \PHPUnit_Framework_TestCase
 		);
 
 		$name = DefaultOutputNamingConvention::createJsConvention()->getFilename($files, $this->compiler);
-		$this->assertRegExp('/^jsloader-[0-9a-f]{12}-a.js$/', $name);
+		$this->assertMatchesRegularExpression('/^jsloader-[0-9a-f]{12}-a.js$/', $name);
 	}
 
 }
