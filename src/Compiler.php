@@ -228,7 +228,7 @@ class Compiler
 		$lastModified = $this->checkLastModified ? $this->getLastModified($watchFiles) : 0;
 
 		if (!$ifModified || !file_exists($path) || $lastModified > filemtime($path) || $this->debugging === true) {
-			$outPath = in_array('safe', stream_get_wrappers()) ? 'safe://' . $path : $path;
+			$outPath = in_array('nette.safe', stream_get_wrappers()) ? 'nette.safe://' . $path : $path;
 			file_put_contents($outPath, $this->getContent($files));
 		}
 
