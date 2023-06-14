@@ -5,12 +5,6 @@ namespace WebLoader\Nette;
 use Nette\Http\IRequest;
 use WebLoader\Filter\CssUrlsFilter;
 
-
-
-/**
- * @author Jan Marek
- * @license MIT
- */
 class CssUrlFilter extends CssUrlsFilter
 {
 

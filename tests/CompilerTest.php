@@ -3,38 +3,49 @@
 namespace WebLoader\Test;
 
 use Mockery;
+use PHPUnit\Framework\TestCase;
 use WebLoader\Compiler;
+use WebLoader\FileCollection;
 use WebLoader\InvalidArgumentException;
+use function count;
+use function file_get_contents;
+use function glob;
+use function implode;
+use function is_numeric;
+use function md5;
+use function pathinfo;
+use function strrev;
+use function unlink;
+use const PATHINFO_FILENAME;
+use const PHP_EOL;
 
 /**
  * CompilerTest
- *
- * @author Jan Marek
  */
-class CompilerTest extends \PHPUnit\Framework\TestCase
+class CompilerTest extends TestCase
 {
 
-	/** @var \WebLoader\Compiler */
+	/** @var Compiler */
 	private $object;
 
 	protected function setUp(): void
 	{
 		$fileCollection = Mockery::mock('WebLoader\IFileCollection');
-		$fileCollection->shouldReceive('getFiles')->andReturn(array(
+		$fileCollection->shouldReceive('getFiles')->andReturn([
 			__DIR__ . '/fixtures/a.txt',
 			__DIR__ . '/fixtures/b.txt',
 			__DIR__ . '/fixtures/c.txt',
-		));
-		$fileCollection->shouldReceive('getWatchFiles')->andReturn(array(
+		]);
+		$fileCollection->shouldReceive('getWatchFiles')->andReturn([
 			__DIR__ . '/fixtures/a.txt',
 			__DIR__ . '/fixtures/b.txt',
 			__DIR__ . '/fixtures/c.txt',
-		));
+		]);
 
 		$convention = Mockery::mock('WebLoader\IOutputNamingConvention');
-		$convention->shouldReceive('getFilename')->andReturnUsing(function ($files, $compiler) {
-			return 'webloader-' . md5(join(',', $files));
-		});
+		$convention->shouldReceive('getFilename')->andReturnUsing(
+			fn ($files, $compiler) => 'webloader-' . md5(implode(',', $files))
+		);
 
 		$this->object = new Compiler($fileCollection, $convention, __DIR__ . '/temp');
 
@@ -63,7 +74,7 @@ class CompilerTest extends \PHPUnit\Framework\TestCase
 	public function testEmptyFiles(): void
 	{
 		self::assertTrue($this->object->getJoinFiles());
-		$this->object->setFileCollection(new \WebLoader\FileCollection());
+		$this->object->setFileCollection(new FileCollection());
 
 		$ret = $this->object->generate();
 		self::assertEquals(0, count($ret));
@@ -72,7 +83,7 @@ class CompilerTest extends \PHPUnit\Framework\TestCase
 
 	public function testNotJoinFiles(): void
 	{
-		$this->object->setJoinFiles(FALSE);
+		$this->object->setJoinFiles(false);
 		self::assertFalse($this->object->getJoinFiles());
 
 		$ret = $this->object->generate();
@@ -82,25 +93,22 @@ class CompilerTest extends \PHPUnit\Framework\TestCase
 
 	public function testGeneratingAndFilters(): void
 	{
-		$this->object->addFileFilter(function ($code) {
-			return strrev($code);
-		});
-		$this->object->addFileFilter(function ($code, Compiler $compiler, $file) {
-			return pathinfo($file, PATHINFO_FILENAME) . ':' . $code . ',';
-		});
-		$this->object->addFilter(function ($code, Compiler $compiler) {
-			return '-' . $code;
-		});
-		$this->object->addFilter(function ($code) {
-			return $code . $code;
-		});
+		$this->object->addFileFilter(fn ($code) => strrev($code));
+		$this->object->addFileFilter(
+			fn ($code, Compiler $compiler, $file) => pathinfo($file, PATHINFO_FILENAME) . ':' . $code . ','
+		);
+		$this->object->addFilter(fn ($code, Compiler $compiler) => '-' . $code);
+		$this->object->addFilter(fn ($code) => $code . $code);
 
 		$expectedContent = '-' . PHP_EOL . 'a:cba,' . PHP_EOL . 'b:fed,' . PHP_EOL .
 			'c:ihg,-' . PHP_EOL . 'a:cba,' . PHP_EOL . 'b:fed,' . PHP_EOL . 'c:ihg,';
 
 		$files = $this->object->generate();
 
-		self::assertTrue(is_numeric($files[0]->lastModified), 'Generate does not provide last modified timestamp correctly.');
+		self::assertTrue(
+			is_numeric($files[0]->lastModified),
+			'Generate does not provide last modified timestamp correctly.',
+		);
 
 		$content = file_get_contents($this->object->getOutputDir() . '/' . $files[0]->file);
 
@@ -117,22 +125,18 @@ class CompilerTest extends \PHPUnit\Framework\TestCase
 
 	public function testFilters(): void
 	{
-		$filter = function ($code, \WebLoader\Compiler $loader) {
-			return $code . $code;
-		};
+		$filter = fn ($code, Compiler $loader) => $code . $code;
 		$this->object->addFilter($filter);
 		$this->object->addFilter($filter);
-		self::assertEquals(array($filter, $filter), $this->object->getFilters());
+		self::assertEquals([$filter, $filter], $this->object->getFilters());
 	}
 
 	public function testFileFilters(): void
 	{
-		$filter = function ($code, \WebLoader\Compiler $loader, $file = null) {
-			return $code . $code;
-		};
+		$filter = fn ($code, Compiler $loader, $file = null) => $code . $code;
 		$this->object->addFileFilter($filter);
 		$this->object->addFileFilter($filter);
-		self::assertEquals(array($filter, $filter), $this->object->getFileFilters());
+		self::assertEquals([$filter, $filter], $this->object->getFileFilters());
 	}
 
 	public function testNonCallableFilter(): void

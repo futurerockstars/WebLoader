@@ -2,10 +2,9 @@
 
 namespace WebLoader\Nette;
 
-/**
- * @author Filip Procházka <filip@prochazka.su>
- */
-class CompilationException extends \WebLoader\WebLoaderException
+use WebLoader\WebLoaderException;
+
+class CompilationException extends WebLoaderException
 {
 
 }

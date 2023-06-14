@@ -2,19 +2,21 @@
 
 namespace WebLoader\Nette;
 
+use Nette\Application\UI\Control;
+use Nette\Utils\Html;
 use WebLoader\Compiler;
 use WebLoader\FileCollection;
+use function func_get_args;
+use function func_num_args;
+use const PHP_EOL;
 
 /**
  * Web loader
- *
- * @author Jan Marek
- * @license MIT
  */
-abstract class WebLoader extends \Nette\Application\UI\Control
+abstract class WebLoader extends Control
 {
 
-	/** @var \WebLoader\Compiler */
+	/** @var Compiler */
 	private $compiler;
 
 	/** @var string */
@@ -27,16 +29,13 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 	}
 
 	/**
-	 * @return \WebLoader\Compiler
+	 * @return Compiler
 	 */
 	public function getCompiler()
 	{
 		return $this->compiler;
 	}
 
-	/**
-	 * @param \WebLoader\Compiler
-	 */
 	public function setCompiler(Compiler $compiler)
 	{
 		$this->compiler = $compiler;
@@ -50,9 +49,6 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 		return $this->tempPath;
 	}
 
-	/**
-	 * @param string
-	 */
 	public function setTempPath($tempPath)
 	{
 		$this->tempPath = $tempPath;
@@ -60,8 +56,9 @@ abstract class WebLoader extends \Nette\Application\UI\Control
 
 	/**
 	 * Get html element including generated content
+	 *
 	 * @param string $source
-	 * @return \Nette\Utils\Html
+	 * @return Html
 	 */
 	abstract public function getElement($source);
 

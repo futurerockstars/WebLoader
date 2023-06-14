@@ -2,11 +2,15 @@
 
 namespace WebLoader\Filter;
 
+use WebLoader\InvalidArgumentException;
+use function array_key_exists;
+use function array_keys;
+use function array_map;
+use function array_values;
+use function str_replace;
+
 /**
  * Variables filter for WebLoader
- *
- * @author Jan Marek
- * @license MIT
  */
 class VariablesFilter
 {
@@ -22,9 +26,10 @@ class VariablesFilter
 
 	/**
 	 * Construct
+	 *
 	 * @param array $variables
 	 */
-	public function __construct(array $variables = array())
+	public function __construct(array $variables = [])
 	{
 		foreach ($variables as $key => $value) {
 			$this->$key = $value;
@@ -33,19 +38,22 @@ class VariablesFilter
 
 	/**
 	 * Set delimiter
+	 *
 	 * @param string $start
 	 * @param string $end
 	 * @return VariablesFilter
 	 */
 	public function setDelimiter($start, $end)
 	{
-		$this->startVariable = (string)$start;
-		$this->endVariable = (string)$end;
+		$this->startVariable = (string) $start;
+		$this->endVariable = (string) $end;
+
 		return $this;
 	}
 
 	/**
 	 * Invoke filter
+	 *
 	 * @param string $code
 	 * @return string
 	 */
@@ -54,9 +62,7 @@ class VariablesFilter
 		$start = $this->startVariable;
 		$end = $this->endVariable;
 
-		$variables = array_map(function ($key) use ($start, $end) {
-			return $start . $key . $end;
-		}, array_keys($this->variables));
+		$variables = array_map(fn ($key) => $start . $key . $end, array_keys($this->variables));
 
 		$values = array_values($this->variables);
 
@@ -65,6 +71,7 @@ class VariablesFilter
 
 	/**
 	 * Magic set variable, do not call directly
+	 *
 	 * @param string $name
 	 * @param string $value
 	 */
@@ -75,16 +82,17 @@ class VariablesFilter
 
 	/**
 	 * Magic get variable, do not call directly
+	 *
 	 * @param string $name
 	 * @return string
-	 * @throws \WebLoader\InvalidArgumentException
+	 * @throws InvalidArgumentException
 	 */
-	public function & __get($name)
+	public function &__get($name)
 	{
 		if (array_key_exists($name, $this->variables)) {
 			return $this->variables[$name];
 		} else {
-			throw new \WebLoader\InvalidArgumentException("Variable '$name' is not set.");
+			throw new InvalidArgumentException("Variable '$name' is not set.");
 		}
 	}
 

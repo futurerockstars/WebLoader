@@ -2,9 +2,10 @@
 
 namespace WebLoader\Test\Path;
 
+use PHPUnit\Framework\TestCase;
 use WebLoader\Path;
 
-class PathTest extends \PHPUnit\Framework\TestCase
+class PathTest extends TestCase
 {
 
 	public function testNormalize(): void

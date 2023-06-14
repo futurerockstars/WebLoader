@@ -2,11 +2,16 @@
 
 namespace WebLoader\Filter;
 
+use WebLoader\Compiler;
+use function escapeshellarg;
+use function file_get_contents;
+use function pathinfo;
+use function sprintf;
+use function substr_replace;
+use const PATHINFO_EXTENSION;
+
 /**
  * TypeScript filter
- *
- * @author Jan Tvrdík
- * @license MIT
  */
 class TypeScriptFilter
 {
@@ -21,7 +26,7 @@ class TypeScriptFilter
 	 * @param string $bin
 	 * @param array $env
 	 */
-	public function __construct($bin = 'tsc', array $env = array())
+	public function __construct($bin = 'tsc', array $env = [])
 	{
 		$this->bin = $bin;
 		$this->env = $env + $_ENV;
@@ -32,16 +37,15 @@ class TypeScriptFilter
 	 * Invoke filter
 	 *
 	 * @param  string $code
-	 * @param  \WebLoader\Compiler $compiler
 	 * @param  string $file
 	 * @return string
 	 */
-	public function __invoke($code, \WebLoader\Compiler $compiler, $file = NULL)
+	public function __invoke($code, Compiler $compiler, $file = null)
 	{
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'ts') {
 			$out = substr_replace($file, 'js', -2);
-			$cmd = sprintf("%s %s --target ES5 --out %s", $this->bin, escapeshellarg($file), escapeshellarg($out));
-			Process::run($cmd, NULL, NULL, $this->env);
+			$cmd = sprintf('%s %s --target ES5 --out %s', $this->bin, escapeshellarg($file), escapeshellarg($out));
+			Process::run($cmd, null, null, $this->env);
 			$code = file_get_contents($out);
 		}
 

@@ -3,11 +3,22 @@
 namespace WebLoader;
 
 use Nette\Utils\FileSystem;
+use function array_merge;
+use function array_unique;
+use function call_user_func;
+use function count;
+use function file_exists;
+use function file_get_contents;
+use function file_put_contents;
+use function filemtime;
+use function in_array;
+use function is_callable;
+use function max;
+use function stream_get_wrappers;
+use const PHP_EOL;
 
 /**
  * Compiler
- *
- * @author Jan Marek
  */
 class Compiler
 {
@@ -16,13 +27,13 @@ class Compiler
 	private $outputDir;
 
 	/** @var bool */
-	private $joinFiles = TRUE;
+	private $joinFiles = true;
 
 	/** @var array */
-	private $filters = array();
+	private $filters = [];
 
 	/** @var array */
-	private $fileFilters = array();
+	private $fileFilters = [];
 
 	/** @var IFileCollection */
 	private $collection;
@@ -31,10 +42,10 @@ class Compiler
 	private $namingConvention;
 
 	/** @var bool */
-	private $checkLastModified = TRUE;
+	private $checkLastModified = true;
 
 	/** @var bool */
-	private $debugging = FALSE;
+	private $debugging = false;
 
 	public function __construct(IFileCollection $files, IOutputNamingConvention $convention, $outputDir)
 	{
@@ -45,7 +56,7 @@ class Compiler
 
 	/**
 	 * Create compiler with predefined css output naming convention
-	 * @param IFileCollection $files
+	 *
 	 * @param string $outputDir
 	 * @return Compiler
 	 */
@@ -56,7 +67,7 @@ class Compiler
 
 	/**
 	 * Create compiler with predefined javascript output naming convention
-	 * @param IFileCollection $files
+	 *
 	 * @param string $outputDir
 	 * @return Compiler
 	 */
@@ -68,13 +79,14 @@ class Compiler
 	/**
 	 * @param bool $allow
 	 */
-	public function enableDebugging($allow = TRUE)
+	public function enableDebugging($allow = true)
 	{
 		$this->debugging = (bool) $allow;
 	}
 
 	/**
 	 * Get temp path
+	 *
 	 * @return string
 	 */
 	public function getOutputDir()
@@ -84,6 +96,7 @@ class Compiler
 
 	/**
 	 * Set temp path
+	 *
 	 * @param string $tempPath
 	 */
 	public function setOutputDir($tempPath)
@@ -95,6 +108,7 @@ class Compiler
 
 	/**
 	 * Get join files
+	 *
 	 * @return bool
 	 */
 	public function getJoinFiles()
@@ -104,6 +118,7 @@ class Compiler
 
 	/**
 	 * Set join files
+	 *
 	 * @param bool $joinFiles
 	 */
 	public function setJoinFiles($joinFiles)
@@ -113,6 +128,7 @@ class Compiler
 
 	/**
 	 * Set check last modified
+	 *
 	 * @param bool $checkLastModified
 	 */
 	public function setCheckLastModified($checkLastModified)
@@ -122,10 +138,11 @@ class Compiler
 
 	/**
 	 * Get last modified timestamp of newest file
+	 *
 	 * @param array $files
 	 * @return int
 	 */
-	public function getLastModified(array $files = null)
+	public function getLastModified(?array $files = null)
 	{
 		if ($files === null) {
 			$files = $this->collection->getFiles();
@@ -142,10 +159,11 @@ class Compiler
 
 	/**
 	 * Get joined content of all files
+	 *
 	 * @param array $files
 	 * @return string
 	 */
-	public function getContent(array $files = null)
+	public function getContent(?array $files = null)
 	{
 		if ($files === null) {
 			$files = $this->collection->getFiles();
@@ -167,56 +185,63 @@ class Compiler
 
 	/**
 	 * Load content and save file
+	 *
 	 * @param bool $ifModified
 	 * @return array filenames of generated files
 	 */
-	public function generate($ifModified = TRUE)
+	public function generate($ifModified = true)
 	{
 		$files = $this->collection->getFiles();
 
 		if (!count($files)) {
-			return array();
+			return [];
 		}
 
 		if ($this->joinFiles) {
-			$watchFiles = $this->checkLastModified ? array_unique(array_merge($files, $this->collection->getWatchFiles())) : array();
+			$watchFiles = $this->checkLastModified
+				? array_unique(array_merge($files, $this->collection->getWatchFiles()))
+				: [];
 
-			return array(
+			return [
 				$this->generateFiles($files, $ifModified, $watchFiles),
-			);
-
+			];
 		} else {
-			$arr = array();
+			$arr = [];
 
 			foreach ($files as $file) {
-				$watchFiles = $this->checkLastModified ? array_unique(array_merge(array($file), $this->collection->getWatchFiles())) : array();
-				$arr[] = $this->generateFiles(array($file), $ifModified, $watchFiles);
+				$watchFiles = $this->checkLastModified
+					? array_unique(
+						array_merge([$file], $this->collection->getWatchFiles()),
+					)
+					: [];
+				$arr[] = $this->generateFiles([$file], $ifModified, $watchFiles);
 			}
 
 			return $arr;
 		}
 	}
 
-	protected function generateFiles(array $files, $ifModified, array $watchFiles = array())
+	protected function generateFiles(array $files, $ifModified, array $watchFiles = [])
 	{
 		$name = $this->namingConvention->getFilename($files, $this);
 		$path = $this->outputDir . '/' . $name;
 		$lastModified = $this->checkLastModified ? $this->getLastModified($watchFiles) : 0;
 
-		if (!$ifModified || !file_exists($path) || $lastModified > filemtime($path) || $this->debugging === TRUE) {
+		if (!$ifModified || !file_exists($path) || $lastModified > filemtime($path) || $this->debugging === true) {
 			$outPath = in_array('safe', stream_get_wrappers()) ? 'safe://' . $path : $path;
 			file_put_contents($outPath, $this->getContent($files));
 		}
 
-		return (object) array(
+		return (object) [
 			'file' => $name,
 			'lastModified' => $lastModified,
 			'sourceFiles' => $files,
-		);
+		];
 	}
 
 	/**
 	 * Load file
+	 *
 	 * @param string $file path
 	 * @return string
 	 */
@@ -232,7 +257,7 @@ class Compiler
 	}
 
 	/**
-	 * @return \WebLoader\IFileCollection
+	 * @return IFileCollection
 	 */
 	public function getFileCollection()
 	{
@@ -240,24 +265,18 @@ class Compiler
 	}
 
 	/**
-	 * @return \WebLoader\IOutputNamingConvention
+	 * @return IOutputNamingConvention
 	 */
 	public function getOutputNamingConvention()
 	{
 		return $this->namingConvention;
 	}
 
-	/**
-	 * @param \WebLoader\IFileCollection $collection
-	 */
 	public function setFileCollection(IFileCollection $collection)
 	{
 		$this->collection = $collection;
 	}
 
-	/**
-	 * @param \WebLoader\IOutputNamingConvention $namingConvention
-	 */
 	public function setOutputNamingConvention(IOutputNamingConvention $namingConvention)
 	{
 		$this->namingConvention = $namingConvention;

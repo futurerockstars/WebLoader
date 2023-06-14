@@ -5,6 +5,9 @@ namespace WebLoader\Nette;
 use Nette\DI\Container;
 use Nette\Http\IRequest;
 use WebLoader\Compiler;
+use function rtrim;
+use function strtolower;
+use function ucfirst;
 
 class LoaderFactory
 {
@@ -24,8 +27,6 @@ class LoaderFactory
 	/**
 	 * @param array $tempPaths
 	 * @param string $extensionName
-	 * @param IRequest $httpRequest
-	 * @param Container $serviceLocator
 	 */
 	public function __construct(array $tempPaths, $extensionName, IRequest $httpRequest, Container $serviceLocator)
 	{
@@ -37,23 +38,25 @@ class LoaderFactory
 
 	/**
 	 * @param string $name
-	 * @return \WebLoader\Nette\CssLoader
+	 * @return CssLoader
 	 */
 	public function createCssLoader($name)
 	{
 		/** @var Compiler $compiler */
 		$compiler = $this->serviceLocator->getService($this->extensionName . '.css' . ucfirst($name) . 'Compiler');
+
 		return new CssLoader($compiler, $this->formatTempPath($name));
 	}
 
 	/**
 	 * @param string $name
-	 * @return \WebLoader\Nette\JavaScriptLoader
+	 * @return JavaScriptLoader
 	 */
 	public function createJavaScriptLoader($name)
 	{
 		/** @var Compiler $compiler */
 		$compiler = $this->serviceLocator->getService($this->extensionName . '.js' . ucfirst($name) . 'Compiler');
+
 		return new JavaScriptLoader($compiler, $this->formatTempPath($name));
 	}
 
@@ -64,7 +67,8 @@ class LoaderFactory
 	private function formatTempPath($name)
 	{
 		$lName = strtolower($name);
-		$tempPath = isset($this->tempPaths[$lName]) ? $this->tempPaths[$lName] : Extension::DEFAULT_TEMP_PATH;
+		$tempPath = $this->tempPaths[$lName] ?? Extension::DEFAULT_TEMP_PATH;
+
 		return rtrim($this->httpRequest->getUrl()->basePath, '/') . '/' . $tempPath;
 	}
 

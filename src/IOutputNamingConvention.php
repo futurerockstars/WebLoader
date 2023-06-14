@@ -4,8 +4,6 @@ namespace WebLoader;
 
 /**
  * IOutputNamingConvention
- *
- * @author Jan Marek
  */
 interface IOutputNamingConvention
 {

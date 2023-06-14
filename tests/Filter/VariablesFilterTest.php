@@ -2,9 +2,11 @@
 
 namespace WebLoader\Test\Filter;
 
+use PHPUnit\Framework\TestCase;
 use WebLoader\Filter\VariablesFilter;
+use function call_user_func;
 
-class VariablesFilterTest extends \PHPUnit\Framework\TestCase
+class VariablesFilterTest extends TestCase
 {
 
 	/** @var VariablesFilter */
@@ -12,9 +14,7 @@ class VariablesFilterTest extends \PHPUnit\Framework\TestCase
 
 	protected function setUp(): void
 	{
-		$this->object = new VariablesFilter(array(
-			'foo' => 'bar',
-		));
+		$this->object = new VariablesFilter(['foo' => 'bar']);
 	}
 
 	public function testReplace(): void

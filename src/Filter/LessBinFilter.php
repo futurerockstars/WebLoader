@@ -2,11 +2,13 @@
 
 namespace WebLoader\Filter;
 
+use WebLoader\Compiler;
+use function dirname;
+use function pathinfo;
+use const PATHINFO_EXTENSION;
+
 /**
  * Less CSS filter
- *
- * @author Jan Tvrdík
- * @license MIT
  */
 class LessBinFilter
 {
@@ -21,7 +23,7 @@ class LessBinFilter
 	 * @param string $bin
 	 * @param array $env
 	 */
-	public function __construct($bin = 'lessc', array $env = array())
+	public function __construct($bin = 'lessc', array $env = [])
 	{
 		$this->bin = $bin;
 		$this->env = $env + $_ENV;
@@ -30,12 +32,12 @@ class LessBinFilter
 
 	/**
 	 * Invoke filter
+	 *
 	 * @param string $code
-	 * @param \WebLoader\Compiler $loader
 	 * @param string $file
 	 * @return string
 	 */
-	public function __invoke($code, \WebLoader\Compiler $loader, $file)
+	public function __invoke($code, Compiler $loader, $file)
 	{
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'less') {
 			$code = Process::run("{$this->bin} -", $code, dirname($file), $this->env);

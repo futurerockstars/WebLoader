@@ -2,11 +2,15 @@
 
 namespace WebLoader\Filter;
 
+use RuntimeException;
+use WebLoader\Compiler;
+use WebLoader\WebLoaderException;
+use function pathinfo;
+use const PATHINFO_DIRNAME;
+use const PATHINFO_EXTENSION;
+
 /**
  * Stylus filter
- *
- * @author Patrik Votoček
- * @license MIT
  */
 class StylusFilter
 {
@@ -15,14 +19,11 @@ class StylusFilter
 	private $bin;
 
 	/** @var bool */
-	public $compress = FALSE;
+	public $compress = false;
 
 	/** @var bool */
-	public $includeCss = FALSE;
+	public $includeCss = false;
 
-	/**
-	 * @param string
-	 */
 	public function __construct($bin = 'stylus')
 	{
 		$this->bin = $bin;
@@ -31,20 +32,21 @@ class StylusFilter
 	/**
 	 * Invoke filter
 	 *
-	 * @param string
-	 * @param \WebLoader\Compiler
-	 * @param string
+	 * @param string $code
+	 * @param string|null $file
 	 * @return string
 	 */
-	public function __invoke($code, \WebLoader\Compiler $loader, $file = NULL)
+	public function __invoke($code, Compiler $loader, $file = null)
 	{
 		if (pathinfo($file, PATHINFO_EXTENSION) === 'styl') {
-			$path =
-			$cmd = $this->bin . ($this->compress ? ' -c' : '') . ($this->includeCss ? ' --include-css' : '') . ' -I ' . pathinfo($file, PATHINFO_DIRNAME);
+			$cmd = $this->bin . ($this->compress ? ' -c' : '') . ($this->includeCss ? ' --include-css' : '') . ' -I ' . pathinfo(
+				$file,
+				PATHINFO_DIRNAME,
+			);
 			try {
 				$code = Process::run($cmd, $code);
-			} catch (\RuntimeException $e) {
-				throw new \WebLoader\WebLoaderException('Stylus Filter Error', 0, $e);
+			} catch (RuntimeException $e) {
+				throw new WebLoaderException('Stylus Filter Error', 0, $e);
 			}
 		}
 

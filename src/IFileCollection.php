@@ -2,9 +2,6 @@
 
 namespace WebLoader;
 
-/**
- * @author Jan Marek
- */
 interface IFileCollection
 {
 
@@ -27,4 +24,5 @@ interface IFileCollection
 	 * @return array
 	 */
 	public function getWatchFiles();
+
 }

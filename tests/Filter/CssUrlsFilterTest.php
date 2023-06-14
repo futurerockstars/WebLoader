@@ -2,9 +2,10 @@
 
 namespace WebLoader\Test\Filter;
 
+use PHPUnit\Framework\TestCase;
 use WebLoader\Filter\CssUrlsFilter;
 
-class CssUrlsFilterTest extends \PHPUnit\Framework\TestCase
+class CssUrlsFilterTest extends TestCase
 {
 
 	/** @var CssUrlsFilter */
@@ -38,12 +39,12 @@ class CssUrlsFilterTest extends \PHPUnit\Framework\TestCase
 
 		self::assertEquals(
 			'/images/image.png',
-			$this->object->absolutizeUrl('./../images/image.png', '\'', $cssPath)
+			$this->object->absolutizeUrl('./../images/image.png', '\'', $cssPath),
 		);
 
 		self::assertEquals(
 			'/images/path/to/image.png',
-			$this->object->absolutizeUrl('./../images/path/./to/image.png', '\'', $cssPath)
+			$this->object->absolutizeUrl('./../images/path/./to/image.png', '\'', $cssPath),
 		);
 	}
 

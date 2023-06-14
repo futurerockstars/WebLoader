@@ -171,12 +171,12 @@ parameters:
 			path: ../src/FileCollection.php
 
 		-
-			message: "#^Method WebLoader\\\\FileCollection\\:\\:addFile\\(\\) has no return type specified\\.$#"
-			count: 1
+			message: "#^Casting to string something that's already string\\.$#"
+			count: 2
 			path: ../src/FileCollection.php
 
 		-
-			message: "#^Method WebLoader\\\\FileCollection\\:\\:addFile\\(\\) has parameter \\$file with no type specified\\.$#"
+			message: "#^Method WebLoader\\\\FileCollection\\:\\:addFile\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: ../src/FileCollection.php
 
@@ -231,11 +231,6 @@ parameters:
 			path: ../src/FileCollection.php
 
 		-
-			message: "#^Method WebLoader\\\\FileCollection\\:\\:addWatchFile\\(\\) has parameter \\$file with no type specified\\.$#"
-			count: 1
-			path: ../src/FileCollection.php
-
-		-
 			message: "#^Method WebLoader\\\\FileCollection\\:\\:addWatchFiles\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: ../src/FileCollection.php
@@ -252,11 +247,6 @@ parameters:
 
 		-
 			message: "#^Method WebLoader\\\\FileCollection\\:\\:addWatchFiles\\(\\) has parameter \\$files with no value type specified in iterable type array\\|Traversable\\.$#"
-			count: 1
-			path: ../src/FileCollection.php
-
-		-
-			message: "#^Method WebLoader\\\\FileCollection\\:\\:cannonicalizePath\\(\\) has parameter \\$path with no type specified\\.$#"
 			count: 1
 			path: ../src/FileCollection.php
 
@@ -282,11 +272,6 @@ parameters:
 
 		-
 			message: "#^Method WebLoader\\\\FileCollection\\:\\:removeFile\\(\\) has no return type specified\\.$#"
-			count: 1
-			path: ../src/FileCollection.php
-
-		-
-			message: "#^Method WebLoader\\\\FileCollection\\:\\:removeFile\\(\\) has parameter \\$file with no type specified\\.$#"
 			count: 1
 			path: ../src/FileCollection.php
 
@@ -319,11 +304,6 @@ parameters:
 			message: "#^Property WebLoader\\\\FileCollection\\:\\:\\$watchFiles type has no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../src/FileCollection.php
-
-		-
-			message: "#^Anonymous function uses \\$this assigned to variable \\$self\\. Use \\$this directly in the function body\\.$#"
-			count: 1
-			path: ../src/Filter/CssUrlsFilter.php
 
 		-
 			message: "#^Method WebLoader\\\\Filter\\\\CssUrlsFilter\\:\\:__invoke\\(\\) should return string but returns string\\|null\\.$#"
@@ -436,33 +416,8 @@ parameters:
 			path: ../src/Filter/StylusFilter.php
 
 		-
-			message: "#^Method WebLoader\\\\Filter\\\\StylusFilter\\:\\:__invoke\\(\\) has parameter \\$code with no type specified\\.$#"
-			count: 1
-			path: ../src/Filter/StylusFilter.php
-
-		-
-			message: "#^Method WebLoader\\\\Filter\\\\StylusFilter\\:\\:__invoke\\(\\) has parameter \\$file with no type specified\\.$#"
-			count: 1
-			path: ../src/Filter/StylusFilter.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\\\WebLoader\\\\Compiler\\)\\: Unexpected token \"\\\\n\\\\t \\* \", expected variable at offset 74 on line 5$#"
-			count: 1
-			path: ../src/Filter/StylusFilter.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\n\\\\t \", expected variable at offset 21 on line 2$#"
-			count: 1
-			path: ../src/Filter/StylusFilter.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\n\\\\t \\* \", expected variable at offset 43 on line 4$#"
-			count: 1
-			path: ../src/Filter/StylusFilter.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\n\\\\t \\* \", expected variable at offset 92 on line 6$#"
-			count: 1
+			message: "#^Parameter \\#1 \\$path of function pathinfo expects string, string\\|null given\\.$#"
+			count: 2
 			path: ../src/Filter/StylusFilter.php
 
 		-
@@ -563,11 +518,6 @@ parameters:
 		-
 			message: "#^Only numeric types are allowed in \\+, int\\<0, max\\>\\|false given on the right side\\.$#"
 			count: 5
-			path: ../src/Nette/Diagnostics/Panel.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\n\\\\t \", expected variable at offset 21 on line 2$#"
-			count: 1
 			path: ../src/Nette/Diagnostics/Panel.php
 
 		-
@@ -719,16 +669,6 @@ parameters:
 			path: ../src/Nette/WebLoader.php
 
 		-
-			message: "#^PHPDoc tag @param has invalid value \\(\\\\WebLoader\\\\Compiler\\)\\: Unexpected token \"\\\\n\\\\t \", expected variable at offset 34 on line 2$#"
-			count: 1
-			path: ../src/Nette/WebLoader.php
-
-		-
-			message: "#^PHPDoc tag @param has invalid value \\(string\\)\\: Unexpected token \"\\\\n\\\\t \", expected variable at offset 21 on line 2$#"
-			count: 1
-			path: ../src/Nette/WebLoader.php
-
-		-
 			message: "#^WebLoader\\\\Nette\\\\WebLoader\\:\\:__construct\\(\\) does not call parent constructor from Nette\\\\ComponentModel\\\\Component\\.$#"
 			count: 1
 			path: ../src/Nette/WebLoader.php
@@ -814,17 +754,17 @@ parameters:
 			path: ../tests/FileCollectionTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$code of method WebLoader\\\\Filter\\\\LessFilter\\:\\:__invoke\\(\\) expects string, string\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$code of callable WebLoader\\\\Filter\\\\LessFilter expects string, string\\|false given\\.$#"
 			count: 1
 			path: ../tests/Filter/LessFilterTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$code of callable WebLoader\\\\Filter\\\\VariablesFilter expects string, string\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$code of callable WebLoader\\\\Filter\\\\ScssFilter expects string, string\\|false given\\.$#"
 			count: 1
 			path: ../tests/Filter/ScssFilterTest.php
 
 		-
-			message: "#^Parameter \\#1 \\$code of method WebLoader\\\\Filter\\\\ScssFilter\\:\\:__invoke\\(\\) expects string, string\\|false given\\.$#"
+			message: "#^Parameter \\#1 \\$code of callable WebLoader\\\\Filter\\\\VariablesFilter expects string, string\\|false given\\.$#"
 			count: 1
 			path: ../tests/Filter/ScssFilterTest.php
 

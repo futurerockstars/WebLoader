@@ -6,9 +6,6 @@ use Nette\Utils\Html;
 
 /**
  * Css loader
- *
- * @author Jan Marek
- * @license MIT
  */
 class CssLoader extends WebLoader
 {
@@ -23,10 +20,11 @@ class CssLoader extends WebLoader
 	private $type = 'text/css';
 
 	/** @var bool */
-	private $alternate = FALSE;
+	private $alternate = false;
 
 	/**
 	 * Get media
+	 *
 	 * @return string
 	 */
 	public function getMedia()
@@ -36,6 +34,7 @@ class CssLoader extends WebLoader
 
 	/**
 	 * Get type
+	 *
 	 * @return string
 	 */
 	public function getType()
@@ -45,6 +44,7 @@ class CssLoader extends WebLoader
 
 	/**
 	 * Get title
+	 *
 	 * @return string
 	 */
 	public function getTitle()
@@ -54,6 +54,7 @@ class CssLoader extends WebLoader
 
 	/**
 	 * Is alternate ?
+	 *
 	 * @return bool
 	 */
 	public function isAlternate()
@@ -63,62 +64,69 @@ class CssLoader extends WebLoader
 
 	/**
 	 * Set media
+	 *
 	 * @param string $media
 	 * @return CssLoader
 	 */
 	public function setMedia($media)
 	{
 		$this->media = $media;
+
 		return $this;
 	}
 
 	/**
 	 * Set type
+	 *
 	 * @param string $type
 	 * @return CssLoader
 	 */
 	public function setType($type)
 	{
 		$this->type = $type;
+
 		return $this;
 	}
 
 	/**
 	 * Set title
+	 *
 	 * @param string $title
 	 * @return CssLoader
 	 */
 	public function setTitle($title)
 	{
 		$this->title = $title;
+
 		return $this;
 	}
 
 	/**
 	 * Set alternate
+	 *
 	 * @param bool $alternate
 	 * @return CssLoader
 	 */
 	public function setAlternate($alternate)
 	{
 		$this->alternate = $alternate;
+
 		return $this;
 	}
 
 	/**
 	 * Get link element
+	 *
 	 * @param string $source
 	 * @return Html
 	 */
 	public function getElement($source)
 	{
-		if ($this->alternate) {
-			$alternate = ' alternate';
-		} else {
-			$alternate = '';
-		}
+		$alternate = $this->alternate ? ' alternate' : '';
 
-		return Html::el("link")->rel("stylesheet".$alternate)->type($this->type)->media($this->media)->title($this->title)->href($source);
+		return Html::el('link')->rel('stylesheet' . $alternate)->type($this->type)->media($this->media)->title(
+			$this->title,
+		)->href($source);
 	}
 
 }

@@ -2,10 +2,15 @@
 
 namespace WebLoader;
 
+use Traversable;
+use function array_diff;
+use function array_map;
+use function array_values;
+use function file_exists;
+use function in_array;
+
 /**
  * FileCollection
- *
- * @author Jan Marek
  */
 class FileCollection implements IFileCollection
 {
@@ -14,24 +19,25 @@ class FileCollection implements IFileCollection
 	private $root;
 
 	/** @var array */
-	private $files = array();
+	private $files = [];
 
 	/** @var array */
-	private $watchFiles = array();
+	private $watchFiles = [];
 
 	/** @var array */
-	private $remoteFiles = array();
+	private $remoteFiles = [];
 
 	/**
 	 * @param string|null $root files root for relative paths
 	 */
-	public function __construct($root = NULL)
+	public function __construct($root = null)
 	{
 		$this->root = $root;
 	}
 
 	/**
 	 * Get file list
+	 *
 	 * @return array
 	 */
 	public function getFiles()
@@ -41,13 +47,14 @@ class FileCollection implements IFileCollection
 
 	/**
 	 * Make path absolute
-	 * @param $path string
-	 * @throws \WebLoader\FileNotFoundException
+	 *
+	 * @param string $path
 	 * @return string
+	 * @throws FileNotFoundException
 	 */
 	public function cannonicalizePath($path)
 	{
-		$rel = Path::normalize($this->root . "/" . $path);
+		$rel = Path::normalize($this->root . '/' . $path);
 		if (file_exists($rel)) {
 			return $rel;
 		}
@@ -60,26 +67,26 @@ class FileCollection implements IFileCollection
 		throw new FileNotFoundException("File '$path' does not exist.");
 	}
 
-
 	/**
 	 * Add file
-	 * @param $file string filename
+	 *
+	 * @param string $file
 	 */
 	public function addFile($file)
 	{
 		$file = $this->cannonicalizePath((string) $file);
 
-		if (in_array($file, $this->files, TRUE)) {
+		if (in_array($file, $this->files, true)) {
 			return;
 		}
 
 		$this->files[] = $file;
 	}
 
-
 	/**
 	 * Add files
-	 * @param array|\Traversable $files array list of files
+	 *
+	 * @param array|Traversable $files array list of files
 	 */
 	public function addFiles($files)
 	{
@@ -88,30 +95,26 @@ class FileCollection implements IFileCollection
 		}
 	}
 
-
 	/**
-	 * Remove file
-	 * @param $file string filename
+	 * @param string $file
 	 */
 	public function removeFile($file)
 	{
-		$this->removeFiles(array($file));
+		$this->removeFiles([$file]);
 	}
 
-
 	/**
-	 * Remove files
 	 * @param array $files list of files
 	 */
 	public function removeFiles(array $files)
 	{
-		$files = array_map(array($this, 'cannonicalizePath'), $files);
+		$files = array_map([$this, 'cannonicalizePath'], $files);
 		$this->files = array_diff($this->files, $files);
 	}
 
-
 	/**
 	 * Add file in remote repository (for example Google CDN).
+	 *
 	 * @param string $file URL address
 	 */
 	public function addRemoteFile($file)
@@ -125,7 +128,8 @@ class FileCollection implements IFileCollection
 
 	/**
 	 * Add multiple remote files
-	 * @param array|\Traversable $files
+	 *
+	 * @param array|Traversable $files
 	 */
 	public function addRemoteFiles($files)
 	{
@@ -139,9 +143,9 @@ class FileCollection implements IFileCollection
 	 */
 	public function clear()
 	{
-		$this->files = array();
-		$this->watchFiles = array();
-		$this->remoteFiles = array();
+		$this->files = [];
+		$this->watchFiles = [];
+		$this->remoteFiles = [];
 	}
 
 	/**
@@ -161,14 +165,13 @@ class FileCollection implements IFileCollection
 	}
 
 	/**
-	 * Add watch file
-	 * @param $file string filename
+	 * @param string $file
 	 */
 	public function addWatchFile($file)
 	{
 		$file = $this->cannonicalizePath((string) $file);
 
-		if (in_array($file, $this->watchFiles, TRUE)) {
+		if (in_array($file, $this->watchFiles, true)) {
 			return;
 		}
 
@@ -176,8 +179,7 @@ class FileCollection implements IFileCollection
 	}
 
 	/**
-	 * Add watch files
-	 * @param array|\Traversable $files array list of files
+	 * @param array|Traversable $files array list of files
 	 */
 	public function addWatchFiles($files)
 	{
@@ -188,10 +190,12 @@ class FileCollection implements IFileCollection
 
 	/**
 	 * Get watch file list
+	 *
 	 * @return array
 	 */
 	public function getWatchFiles()
 	{
 		return array_values($this->watchFiles);
 	}
+
 }

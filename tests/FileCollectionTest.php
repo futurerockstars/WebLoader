@@ -2,15 +2,19 @@
 
 namespace WebLoader\Test;
 
+use ArrayIterator;
+use PHPUnit\Framework\TestCase;
+use SplFileInfo;
 use WebLoader\FileCollection;
 use WebLoader\FileNotFoundException;
+use WebLoader\Path;
+use function count;
+use const DIRECTORY_SEPARATOR;
 
 /**
  * FileCollection test
- *
- * @author Jan Marek
  */
-class FileCollectionTest extends \PHPUnit\Framework\TestCase
+class FileCollectionTest extends TestCase
 {
 
 	/** @var FileCollection */
@@ -26,12 +30,12 @@ class FileCollectionTest extends \PHPUnit\Framework\TestCase
 		$this->object->addFile('a.txt');
 		$this->object->addFile(__DIR__ . '/fixtures/a.txt');
 		$this->object->addFile(__DIR__ . '/fixtures/b.txt');
-		$this->object->addFiles(array(__DIR__ . '/fixtures/c.txt'));
-		$expected = array(
+		$this->object->addFiles([__DIR__ . '/fixtures/c.txt']);
+		$expected = [
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'a.txt',
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'b.txt',
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'c.txt',
-		);
+		];
 		self::assertEqualPaths($expected, $this->object->getFiles());
 	}
 
@@ -48,15 +52,15 @@ class FileCollectionTest extends \PHPUnit\Framework\TestCase
 		$this->object->addFile(__DIR__ . '/fixtures/b.txt');
 
 		$this->object->removeFile('a.txt');
-		$expected = array(
+		$expected = [
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'b.txt',
-		);
+		];
 		self::assertEqualPaths($expected, $this->object->getFiles());
 
-		$this->object->removeFiles(array(__DIR__ . '/fixtures/b.txt'));
+		$this->object->removeFiles([__DIR__ . '/fixtures/b.txt']);
 	}
 
-	public function testCannonicalizePath(): void
+	public function testCanonicalizePath(): void
 	{
 		$abs = __DIR__ . '/./fixtures/a.txt';
 		$rel = 'a.txt';
@@ -68,7 +72,8 @@ class FileCollectionTest extends \PHPUnit\Framework\TestCase
 		try {
 			$this->object->cannonicalizePath('nesdagf');
 			self::fail('Exception was not thrown.');
-		} catch (\WebLoader\FileNotFoundException $e) {
+		} catch (FileNotFoundException $e) {
+			// Noop
 		}
 	}
 
@@ -79,23 +84,23 @@ class FileCollectionTest extends \PHPUnit\Framework\TestCase
 		$this->object->addWatchFile('b.txt');
 		$this->object->clear();
 
-		self::assertEquals(array(), $this->object->getFiles());
-		self::assertEquals(array(), $this->object->getRemoteFiles());
-		self::assertEquals(array(), $this->object->getWatchFiles());
+		self::assertEquals([], $this->object->getFiles());
+		self::assertEquals([], $this->object->getRemoteFiles());
+		self::assertEquals([], $this->object->getWatchFiles());
 	}
 
 	public function testRemoteFiles(): void
 	{
 		$this->object->addRemoteFile('http://jquery.com/jquery.js');
-		$this->object->addRemoteFiles(array(
+		$this->object->addRemoteFiles([
 			'http://jquery.com/jquery.js',
 			'http://google.com/angular.js',
-		));
+		]);
 
-		$expected = array(
+		$expected = [
 			'http://jquery.com/jquery.js',
 			'http://google.com/angular.js',
-		);
+		];
 		self::assertEquals($expected, $this->object->getRemoteFiles());
 	}
 
@@ -103,30 +108,30 @@ class FileCollectionTest extends \PHPUnit\Framework\TestCase
 	{
 		$this->object->addWatchFile(__DIR__ . '/fixtures/a.txt');
 		$this->object->addWatchFile(__DIR__ . '/fixtures/b.txt');
-		$this->object->addWatchFiles(array(__DIR__ . '/fixtures/c.txt'));
-		$expected = array(
+		$this->object->addWatchFiles([__DIR__ . '/fixtures/c.txt']);
+		$expected = [
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'a.txt',
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'b.txt',
 			__DIR__ . DIRECTORY_SEPARATOR . 'fixtures' . DIRECTORY_SEPARATOR . 'c.txt',
-		);
+		];
 		self::assertEqualPaths($expected, $this->object->getWatchFiles());
 	}
 
 	public function testTraversableFiles(): void
 	{
-		$this->object->addFiles(new \ArrayIterator(array('a.txt')));
+		$this->object->addFiles(new ArrayIterator(['a.txt']));
 		self::assertEquals(1, count($this->object->getFiles()));
 	}
 
 	public function testTraversableRemoteFiles(): void
 	{
-		$this->object->addRemoteFiles(new \ArrayIterator(array('http://jquery.com/jquery.js')));
+		$this->object->addRemoteFiles(new ArrayIterator(['http://jquery.com/jquery.js']));
 		self::assertEquals(1, count($this->object->getRemoteFiles()));
 	}
 
 	public function testSplFileInfo(): void
 	{
-		$this->object->addFile(new \SplFileInfo(__DIR__ . '/fixtures/a.txt'));
+		$this->object->addFile(new SplFileInfo(__DIR__ . '/fixtures/a.txt'));
 		self::assertEquals(1, count($this->object->getFiles()));
 	}
 
@@ -135,7 +140,7 @@ class FileCollectionTest extends \PHPUnit\Framework\TestCase
 		$actual = (array) $actual;
 		foreach ((array) $expected as $key => $path) {
 			self::assertTrue(isset($actual[$key]));
-			self::assertEquals(\WebLoader\Path::normalize($path), \WebLoader\Path::normalize($actual[$key]));
+			self::assertEquals(Path::normalize($path), Path::normalize($actual[$key]));
 		}
 	}
 

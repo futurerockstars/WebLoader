@@ -2,10 +2,15 @@
 
 namespace WebLoader;
 
+use function count;
+use function implode;
+use function md5;
+use function pathinfo;
+use function substr;
+use const PATHINFO_FILENAME;
+
 /**
  * DefaultNamingConvention
- *
- * @author Jan Marek
  */
 class DefaultOutputNamingConvention implements IOutputNamingConvention
 {
@@ -42,6 +47,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 
 	/**
 	 * Get generated file name prefix
+	 *
 	 * @return string
 	 */
 	public function getPrefix()
@@ -51,6 +57,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 
 	/**
 	 * Set generated file name prefix
+	 *
 	 * @param string $prefix generated file name prefix
 	 */
 	public function setPrefix($prefix)
@@ -58,9 +65,9 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 		$this->prefix = (string) $prefix;
 	}
 
-
 	/**
 	 * Get generated file name suffix
+	 *
 	 * @return string
 	 */
 	public function getSuffix()
@@ -68,9 +75,9 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 		return $this->suffix;
 	}
 
-
 	/**
 	 * Set generated file name suffix
+	 *
 	 * @param string $suffix generated file name suffix
 	 */
 	public function setSuffix($suffix)
@@ -80,8 +87,8 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 
 	/**
 	 * Filename of generated file
+	 *
 	 * @param array $files
-	 * @param \WebLoader\Compiler $compiler
 	 * @return string
 	 */
 	public function getFilename(array $files, Compiler $compiler)
@@ -89,7 +96,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 		$name = $this->createHash($files, $compiler);
 
 		if (count($files) === 1) {
-			$name .= "-" . pathinfo($files[0], PATHINFO_FILENAME);
+			$name .= '-' . pathinfo($files[0], PATHINFO_FILENAME);
 		}
 
 		return $this->prefix . $name . $this->suffix;
@@ -97,7 +104,7 @@ class DefaultOutputNamingConvention implements IOutputNamingConvention
 
 	protected function createHash(array $files, Compiler $compiler)
 	{
-		return substr(md5(implode("|", $files)), 0, 12);
+		return substr(md5(implode('|', $files)), 0, 12);
 	}
 
 }
