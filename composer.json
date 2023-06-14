@@ -28,12 +28,11 @@
 		"tracy/tracy": "^2.6.0"
 	},
 	"suggest": {
-		"oyejorge/less.php": "LESS compiler written in PHP.",
+		"wikimedia/less.php": "LESS compiler written in PHP.",
 		"leafo/scssphp": "SCSS compiler written in PHP.",
 		"joseki/webloader-filters": "CSSMin & JSMin filters written in PHP."
 	},
 	"require-dev": {
-		"oyejorge/less.php": "~1.5",
 		"leafo/scssphp": "~0.1",
 
 		"phpunit/phpunit": "^9.5.0",
@@ -48,7 +47,8 @@
 		"phpstan/phpstan-nette": "^1.2",
 		"phpstan/phpstan-phpunit": "^1.3",
 		"phpstan/phpstan-strict-rules": "^1.5",
-		"staabm/annotate-pull-request-from-checkstyle": "^1.8"
+		"staabm/annotate-pull-request-from-checkstyle": "^1.8",
+		"wikimedia/less.php": "^4.1.0"
 	},
 	"config": {
 		"allow-plugins": {
