@@ -3,14 +3,13 @@
 namespace WebLoader\Nette;
 
 use Nette;
-use Nette\Configurator;
-use Nette\DI\Compiler;
 use Nette\DI\CompilerExtension;
 use Nette\DI\ContainerBuilder;
 use Nette\Schema\Expect;
 use Nette\Schema\Helpers;
 use Nette\Utils\Finder;
 use SplFileInfo;
+use WebLoader\Compiler;
 use WebLoader\DefaultOutputNamingConvention;
 use WebLoader\FileCollection;
 use WebLoader\FileNotFoundException;
@@ -33,8 +32,6 @@ class Extension extends CompilerExtension
 {
 
 	public const DEFAULT_TEMP_PATH = 'webtemp';
-
-	public const EXTENSION_NAME = 'webloader';
 
 	private string $wwwDir;
 
@@ -140,7 +137,7 @@ class Extension extends CompilerExtension
 		$files->addSetup('addRemoteFiles', [$config['remoteFiles']]);
 
 		$compiler = $builder->addDefinition($this->prefix($name . 'Compiler'))
-			->setFactory(\WebLoader\Compiler::class)
+			->setFactory(Compiler::class)
 			->setArguments([
 				'@' . $filesServiceName,
 				$config['namingConvention'],
@@ -171,14 +168,6 @@ class Extension extends CompilerExtension
 		$compiler->addSetup('setCheckLastModified', [$config['checkLastModified']]);
 
 		// todo css media
-	}
-
-	public function install(Configurator $configurator)
-	{
-		$self = $this;
-		$configurator->onCompile[] = function ($configurator, Compiler $compiler) use ($self) {
-			$compiler->addExtension($self::EXTENSION_NAME, $self);
-		};
 	}
 
 	/**

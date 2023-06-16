@@ -526,11 +526,6 @@ parameters:
 			path: ../src/Nette/Diagnostics/Panel.php
 
 		-
-			message: "#^Anonymous function uses \\$this assigned to variable \\$self\\. Use \\$this directly in the function body\\.$#"
-			count: 1
-			path: ../src/Nette/Extension.php
-
-		-
 			message: "#^Method WebLoader\\\\Nette\\\\Extension\\:\\:addWebLoader\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: ../src/Nette/Extension.php
@@ -557,11 +552,6 @@ parameters:
 
 		-
 			message: "#^Method WebLoader\\\\Nette\\\\Extension\\:\\:findFiles\\(\\) return type has no value type specified in iterable type array\\.$#"
-			count: 1
-			path: ../src/Nette/Extension.php
-
-		-
-			message: "#^Method WebLoader\\\\Nette\\\\Extension\\:\\:install\\(\\) has no return type specified\\.$#"
 			count: 1
 			path: ../src/Nette/Extension.php
 

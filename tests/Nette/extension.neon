@@ -1,0 +1,2 @@
+extensions:
+	webloader: WebLoader\Nette\Extension(%appDir%, %debugMode%)

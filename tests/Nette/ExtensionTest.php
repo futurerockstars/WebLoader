@@ -26,20 +26,18 @@ class ExtensionTest extends TestCase
 		}
 
 		$configurator = new Configurator();
-		$configurator->setTempDirectory($tempDir);
-
-		foreach ($configFiles as $file) {
-			$configurator->addConfig($file);
-		}
-
 		$configurator->addParameters([
 			'wwwDir' => __DIR__ . '/..',
 			'fixturesDir' => __DIR__ . '/../fixtures',
 			'tempDir' => $tempDir,
 		]);
+		$configurator->setTempDirectory($tempDir);
 
-		$extension = new Extension(__DIR__ . '/..', false);
-		$extension->install($configurator);
+		$configurator->addConfig(__DIR__ . '/extension.neon');
+
+		foreach ($configFiles as $file) {
+			$configurator->addConfig($file);
+		}
 
 		$this->container = @$configurator->createContainer(); // sends header X-Powered-By, ...
 	}

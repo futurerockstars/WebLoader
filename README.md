@@ -40,7 +40,7 @@ protected function createComponentCss()
 
 Template:
 
-```html
+```latte
 {control css}
 ```
 
@@ -84,36 +84,9 @@ webloader:
 				- web.js
 ```
 
-For older versions of Nette, you have to register the extension in `app/bootstrap.php`:
-
-```php
-$webloaderExtension = new \WebLoader\Nette\Extension();
-$webloaderExtension->install($configurator);
-```
-
-Usage in `app/presenters/BasePresenter.php`:
-
-```php
-	/** @var \WebLoader\Nette\LoaderFactory @inject */
-	public $webLoader;
-
-	/** @return CssLoader */
-	protected function createComponentCss()
-	{
-		return $this->webLoader->createCssLoader('default');
-	}
-
-	/** @return JavaScriptLoader */
-	protected function createComponentJs()
-	{
-		return $this->webLoader->createJavaScriptLoader('default');
-	}
-```
-
-
 Template:
 
-```html
+```latte
 {control css}
 {control js}
 ```
