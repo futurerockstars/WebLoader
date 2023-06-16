@@ -49,14 +49,15 @@ Example with Nette Framework extension used
 
 Configuration in `app/config/config.neon`:
 
-```html
+```neon
 extensions:
 	webloader: WebLoader\Nette\Extension
 
 services:
 	wlCssFilter: WebLoader\Filter\CssUrlsFilter(%wwwDir%)
 	lessFilter: WebLoader\Filter\LessFilter
-	jwlCssMinFilter: Joseki\Webloader\CssMinFilter
+	jwlCssMinFilter: WebLoader\Filter\CssMinFilter
+	jsMinFilter: WebLoader\Filter\JsMinFilter
 
 webloader:
 	css:

@@ -326,6 +326,11 @@ parameters:
 			path: ../src/Filter/CssUrlsFilter.php
 
 		-
+			message: "#^Only booleans are allowed in a negated boolean, bool\\|string given\\.$#"
+			count: 1
+			path: ../src/Filter/JsMinFilter.php
+
+		-
 			message: "#^Method WebLoader\\\\Filter\\\\LessBinFilter\\:\\:__construct\\(\\) has parameter \\$env with no value type specified in iterable type array\\.$#"
 			count: 1
 			path: ../src/Filter/LessBinFilter.php
@@ -699,6 +704,16 @@ parameters:
 			message: "#^Method WebLoader\\\\Test\\\\FileCollectionTest\\:\\:assertEqualPaths\\(\\) has parameter \\$expected with no type specified\\.$#"
 			count: 1
 			path: ../tests/FileCollectionTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$code of callable WebLoader\\\\Filter\\\\CssMinFilter expects string, string\\|false given\\.$#"
+			count: 1
+			path: ../tests/Filter/CssMinFilterTest.php
+
+		-
+			message: "#^Parameter \\#1 \\$code of callable WebLoader\\\\Filter\\\\JsMinFilter expects string, string\\|false given\\.$#"
+			count: 1
+			path: ../tests/Filter/JsMinFilterTest.php
 
 		-
 			message: "#^Parameter \\#1 \\$code of callable WebLoader\\\\Filter\\\\LessFilter expects string, string\\|false given\\.$#"
